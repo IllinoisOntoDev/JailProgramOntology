@@ -75,6 +75,21 @@
 #    Data properties
 #################################################################
 
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#admissionType
+:admissionType rdf:type owl:DatatypeProperty ;
+               rdfs:subPropertyOf owl:topDataProperty ;
+               rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HealthProgram> ;
+               rdfs:range [ rdf:type rdfs:Datatype ;
+                            owl:oneOf [ rdf:type rdf:List ;
+                                        rdf:first "inpatient" ;
+                                        rdf:rest [ rdf:type rdf:List ;
+                                                   rdf:first "outpatient" ;
+                                                   rdf:rest rdf:nil
+                                                 ]
+                                      ]
+                          ] .
+
+
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#disability
 :disability rdf:type owl:DatatypeProperty ;
             rdfs:subPropertyOf owl:topDataProperty ;
@@ -115,6 +130,20 @@
                             ] .
 
 
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#houseType
+:houseType rdf:type owl:DatatypeProperty ;
+           rdfs:domain :PermanentHousingProgram ;
+           rdfs:range [ rdf:type rdfs:Datatype ;
+                        owl:oneOf [ rdf:type rdf:List ;
+                                    rdf:first "apartment" ;
+                                    rdf:rest [ rdf:type rdf:List ;
+                                               rdf:first "house" ;
+                                               rdf:rest rdf:nil
+                                             ]
+                                  ]
+                      ] .
+
+
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#jailProgramType
 :jailProgramType rdf:type owl:DatatypeProperty ;
                  rdfs:subPropertyOf owl:topDataProperty ;
@@ -134,6 +163,13 @@
 :maximumLengthofStay rdf:type owl:DatatypeProperty ;
                      rdfs:domain :TransitionalHousingProgram ;
                      rdfs:range xsd:string .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#mealsProvided
+:mealsProvided rdf:type owl:DatatypeProperty ;
+               rdfs:subPropertyOf owl:topDataProperty ;
+               rdfs:domain :TransitionalHousingProgram ;
+               rdfs:range xsd:boolean .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#mentalHealthProgramType
@@ -178,6 +214,19 @@
                                rdfs:subPropertyOf owl:topDataProperty ;
                                rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#EmploymentProgram> ;
                                rdfs:range xsd:string .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#subsidized
+:subsidized rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf owl:topDataProperty ;
+            rdfs:domain :PermanentHousingProgram ;
+            rdfs:range xsd:boolean .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#totalBedsAvailable
+:totalBedsAvailable rdf:type owl:DatatypeProperty ;
+                    rdfs:domain :TransitionalHousingProgram ;
+                    rdfs:range xsd:int .
 
 
 ###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#description
