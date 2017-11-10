@@ -36,6 +36,13 @@
         rdfs:range <http://www.w3.org/2006/vcard/ns#Gender> .
 
 
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#location
+:location rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty ;
+          rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HousingProgram> ;
+          rdfs:range <http://www.w3.org/2006/vcard/ns#Address> .
+
+
 ###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#attends
 <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#attends> rdf:type owl:ObjectProperty ;
                                                                                              rdfs:subPropertyOf owl:topObjectProperty ;
@@ -179,11 +186,6 @@
                                                                                                  rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ,
                                                                                                              <http://www.w3.org/ns/org#Organization> ;
                                                                                                  rdfs:range xsd:string .
-
-
-###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#location
-<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#location> rdf:type owl:DatatypeProperty ;
-                                                                                              rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HousingProgram> .
 
 
 ###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#name
