@@ -1,0 +1,75 @@
+Facts about jail programs (i.e. the information about the programs) such as the name, type of program, and eligiblity criteria are asserted. Facts about the jail inmates are either asserted or deduced by other ontologies, such as the crime classification ontology. My ontology then infers which programs an inmate is eligible for participation. Since the eligiblity criteria is different from program to program, I used SWRL rules in order to have more specific rules. Through SWRL, I am able to create rules such as "Inmate I is eligible for program P if program P accepts inmates with crime classification C and inmate I has crime classification C". I am able to make these through the SWRL tab in Protege, and I found that these rules are created as blank nodes.
+
+My example instances are described below.
+
+Jail Programs
+
+1. UC Books to Prisoners
+
+Assertions:
+"UC Books to Prisoners" isA EducationalProgram
+"UC Books to Prisoners" hasRestriction false
+
+2. Elm St Apartments
+
+Assertions:
+"Elm St Apartments" isA TransitionalHousingProgram
+"Elm St Apartments" hasRestriction true
+"Elm St Apartments" allowedInmateCrime "Infraction"
+"Elm St Apartments" allowedInmateCrime "Misdemeanor"
+
+2. Stepping Stone Shelter
+
+Assertions:
+"Stepping Stone Shelter" isA TransitionalHousingProgram
+"Stepping Stone Shelter" hasRestriction true
+"Stepping Stone Shelter" allowedgender "male"
+
+Jail Inmates
+
+1. John Doe
+
+Since I was already using Erica's ontology, I used her existing inference for John Doe.
+"John Doe" isChargedWith "Wobbler"
+
+"John Doe" gender "male"
+
+2. John Deere
+
+"John Deere" isChargedWith "Felony"
+"John Deere" gender "male"
+
+3. Jane Doe
+
+"Jane Doe" isChargedWith "Infraction"
+"Jane Doe" gender "female"
+
+4. Jane Deere
+
+"Jane Deere" isChargedWith "Misdemeanor"
+"Jane Deere" gender "female"
+
+Inference Rules
+
+1. Default Restriction: JailInmate(?i) ^ JailProgram(?p) ^ hasRestriction(?p, false) -> isEligibleFor(?i, ?p)
+
+If a program has no restriction, then all inmates are eligible for that program.
+
+1. Crime Restriction: receives(?i, ?fc) ^ hasClassification(?fc, ?c) ^ allowedInmateCrime(?p, ?c) -> isEligibleFor(?i, ?p)
+
+If a program has crime type restrictions, then only inmates with allowed crime type(s) are eligible for that program.
+
+3. Gender Restriction: allowedGender(?p, ?g) ^ gender(?i, ?g) -> isEligibleFor(?i, ?p)
+
+If a program has gender restrictions, then only inmates with allowed gender(s) are eligible for that program.
+
+Inferences
+
+1. "John Doe" isEligibleFor "UC Books to Prisoners"
+2. "John Deere" isEligibleFor "UC Books to Prisoners"
+3. "Jane Doe" isEligibleFor "UC Books to Prisoners"
+4. "Jane Deere" isEligibleFor "UC Books to Prisoners"
+5. "John Doe" isEligibleFor "Stepping Stone Shelter"
+6. "John Deere" isEligibleFor "Stepping Stone Shelter"
+7. "Jane Doe" isEligibleFor "Elm St Apartments"
+8. "Jane Deere" isEligibleFor "Elm St Apartments"
