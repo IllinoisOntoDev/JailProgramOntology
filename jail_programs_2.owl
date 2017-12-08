@@ -27,7 +27,6 @@
 :allowedInmateCrime rdf:type owl:ObjectProperty ;
                     rdfs:subPropertyOf owl:topObjectProperty ;
                     rdfs:domain :JailProgram ;
-                    rdfs:range <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#CrimeClassification> ;
                     rdfs:comment "types of inmates exluded from a housing program because of the nature of their committed crimes" .
 
 
@@ -528,12 +527,12 @@
    rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
    <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
                                            rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
-                                                       <http://www.w3.org/2003/11/swrl#classPredicate> <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#ChargedPerson> ;
+                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :JailInmate ;
                                                        <http://www.w3.org/2003/11/swrl#argument1> :i
                                                      ] ;
                                            rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
                                                       rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
-                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#isChargedWith> ;
+                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasOffenseType ;
                                                                   <http://www.w3.org/2003/11/swrl#argument1> :i ;
                                                                   <http://www.w3.org/2003/11/swrl#argument2> :c
                                                                 ] ;

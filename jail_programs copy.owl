@@ -18,7 +18,7 @@
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#allowedGender
 :allowedGender rdf:type owl:ObjectProperty ;
                owl:inverseOf :isAllowedGenderIn ;
-               rdfs:domain :JailProgram ;
+               rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ;
                rdfs:range <http://www.w3.org/2006/vcard/ns#Gender> .
 
 
@@ -26,17 +26,9 @@
 :allowedInmateOffense rdf:type owl:ObjectProperty ;
                       rdfs:subPropertyOf owl:topObjectProperty ;
                       owl:inverseOf :isAllowedOffenseIn ;
-                      rdfs:domain :JailProgram ;
+                      rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ;
                       rdfs:range <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#CrimeClassification> ;
                       rdfs:comment "types of inmates exluded from a housing program because of the nature of their committed crimes" .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#attends
-:attends rdf:type owl:ObjectProperty ;
-         rdfs:subPropertyOf owl:topObjectProperty ;
-         owl:inverseOf :isAttendedBy ;
-         rdfs:domain <http://xmlns.com/foaf/0.1/Person> ;
-         rdfs:comment "program attended by the inmate" .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#contact
@@ -61,12 +53,6 @@
                     rdfs:subPropertyOf owl:topObjectProperty .
 
 
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#isAttendedBy
-:isAttendedBy rdf:type owl:ObjectProperty ;
-              rdfs:subPropertyOf owl:topObjectProperty ;
-              rdfs:comment "inmate who attends the program (inverse of attends)" .
-
-
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#isEligibleFor
 :isEligibleFor rdf:type owl:ObjectProperty ;
                rdfs:domain :JailInmate ;
@@ -78,23 +64,37 @@
                                       ) .
 
 
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#isOverseenBy
-:isOverseenBy rdf:type owl:ObjectProperty ;
-              owl:inverseOf :oversees ;
-              rdfs:comment "organization who oversees the program (inverse of oversees)" .
-
-
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#location
 :location rdf:type owl:ObjectProperty ;
           rdfs:subPropertyOf owl:topObjectProperty ;
-          rdfs:domain :HousingProgram ;
+          rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HousingProgram> ;
           rdfs:comment "the location of the housing program" .
 
 
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#oversees
-:oversees rdf:type owl:ObjectProperty ;
-          rdfs:domain <http://xmlns.com/foaf/0.1/Organization> ;
-          rdfs:comment "program overseen by the organization" .
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#attends
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#attends> rdf:type owl:ObjectProperty ;
+                                                                                             rdfs:subPropertyOf owl:topObjectProperty ;
+                                                                                             owl:inverseOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#isAttendedBy> ;
+                                                                                             rdfs:domain <http://xmlns.com/foaf/0.1/Person> ;
+                                                                                             rdfs:comment "program attended by the inmate" .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#isAttendedBy
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#isAttendedBy> rdf:type owl:ObjectProperty ;
+                                                                                                  rdfs:subPropertyOf owl:topObjectProperty ;
+                                                                                                  rdfs:comment "inmate who attends the program (inverse of attends)" .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#isOverseenBy
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#isOverseenBy> rdf:type owl:ObjectProperty ;
+                                                                                                  owl:inverseOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#oversees> ;
+                                                                                                  rdfs:comment "organization who oversees the program (inverse of oversees)" .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#oversees
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#oversees> rdf:type owl:ObjectProperty ;
+                                                                                              rdfs:domain <http://xmlns.com/foaf/0.1/Organization> ;
+                                                                                              rdfs:comment "program overseen by the organization" .
 
 
 ###  http://www.w3.org/2006/vcard/ns#hasAddress
@@ -109,7 +109,7 @@
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#admissionType
 :admissionType rdf:type owl:DatatypeProperty ;
                rdfs:subPropertyOf owl:topDataProperty ;
-               rdfs:domain :HealthProgram ;
+               rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HealthProgram> ;
                rdfs:range [ rdf:type rdfs:Datatype ;
                             owl:oneOf [ rdf:type rdf:List ;
                                         rdf:first "inpatient" ;
@@ -127,37 +127,29 @@
      rdfs:range xsd:int .
 
 
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#description
-:description rdf:type owl:DatatypeProperty ;
-             rdfs:subPropertyOf owl:topDataProperty ;
-             rdfs:domain :JailProgram ,
-                         <http://www.w3.org/ns/org#Organization> ;
-             rdfs:range xsd:string .
-
-
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#disability
 :disability rdf:type owl:DatatypeProperty ;
             rdfs:subPropertyOf owl:topDataProperty ;
-            rdfs:domain :HealthProgram ;
+            rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HealthProgram> ;
             rdfs:range xsd:string .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#educationLevel
 :educationLevel rdf:type owl:DatatypeProperty ;
-                rdfs:domain :EducationProgram ;
+                rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#EducationProgram> ;
                 rdfs:range xsd:string .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#email
 :email rdf:type owl:DatatypeProperty ;
        rdfs:subPropertyOf owl:topDataProperty ;
-       rdfs:domain :NonGovermentOrganization ;
+       rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#NonGovermentOrganization> ;
        rdfs:range xsd:string .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#governmentLevel
 :governmentLevel rdf:type owl:DatatypeProperty ;
-                 rdfs:domain :GovernmentUnit ;
+                 rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#GovernmentUnit> ;
                  rdfs:range [ rdf:type rdfs:Datatype ;
                               owl:oneOf [ rdf:type rdf:List ;
                                           rdf:first "city" ;
@@ -178,7 +170,7 @@
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#hasRestriction
 :hasRestriction rdf:type owl:DatatypeProperty ;
                 rdfs:subPropertyOf owl:topDataProperty ;
-                rdfs:domain :JailProgram ;
+                rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ;
                 rdfs:range xsd:boolean .
 
 
@@ -199,7 +191,7 @@
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#jailProgramType
 :jailProgramType rdf:type owl:DatatypeProperty ;
                  rdfs:subPropertyOf owl:topDataProperty ;
-                 rdfs:domain :JailProgram ;
+                 rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ;
                  rdfs:range [ rdf:type rdfs:Datatype ;
                               owl:oneOf [ rdf:type rdf:List ;
                                           rdf:first "in-custody" ;
@@ -242,14 +234,8 @@
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#minimumAge
 :minimumAge rdf:type owl:DatatypeProperty ;
             rdfs:subPropertyOf owl:topDataProperty ;
-            rdfs:domain :HousingProgram ;
+            rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HousingProgram> ;
             rdfs:range xsd:int .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#name
-:name rdf:type owl:DatatypeProperty ;
-      rdfs:domain :JailProgram ;
-      rdfs:range xsd:string .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#physicalHealthProgramType
@@ -270,7 +256,7 @@
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#requiredEducationalAttainment
 :requiredEducationalAttainment rdf:type owl:DatatypeProperty ;
                                rdfs:subPropertyOf owl:topDataProperty ;
-                               rdfs:domain :EmploymentProgram ;
+                               rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#EmploymentProgram> ;
                                rdfs:range xsd:string .
 
 
@@ -287,31 +273,23 @@
                     rdfs:range xsd:int .
 
 
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#description
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#description> rdf:type owl:DatatypeProperty ;
+                                                                                                 rdfs:subPropertyOf owl:topDataProperty ;
+                                                                                                 rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ,
+                                                                                                             <http://www.w3.org/ns/org#Organization> ;
+                                                                                                 rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#name
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#name> rdf:type owl:DatatypeProperty ;
+                                                                                          rdfs:domain <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ;
+                                                                                          rdfs:range xsd:string .
+
+
 #################################################################
 #    Classes
 #################################################################
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#CollegeEducationProgram
-:CollegeEducationProgram rdf:type owl:Class ;
-                         rdfs:subClassOf :EducationProgram .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#ComputerSkillsProgram
-:ComputerSkillsProgram rdf:type owl:Class ;
-                       rdfs:subClassOf :VocationalTrainingProgram .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#EducationProgram
-:EducationProgram rdf:type owl:Class ;
-                  rdfs:subClassOf :JailProgram ;
-                  rdfs:comment "a  educational program for present or former jail inmates" .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#EmploymentProgram
-:EmploymentProgram rdf:type owl:Class ;
-                   rdfs:subClassOf :JailProgram ;
-                   rdfs:comment "an employment program for present or former jail inmates" .
-
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#FemaleInmates
 :FemaleInmates rdf:type owl:Class ;
@@ -328,7 +306,7 @@
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#FemaleOnlyProgram
 :FemaleOnlyProgram rdf:type owl:Class ;
-                   owl:equivalentClass [ owl:intersectionOf ( :JailProgram
+                   owl:equivalentClass [ owl:intersectionOf ( <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram>
                                                               [ rdf:type owl:Restriction ;
                                                                 owl:onProperty :allowedGender ;
                                                                 owl:hasValue :Female
@@ -336,53 +314,17 @@
                                                             ) ;
                                          rdf:type owl:Class
                                        ] ;
-                   rdfs:subClassOf :JailProgram .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#GEDProgram
-:GEDProgram rdf:type owl:Class ;
-            rdfs:subClassOf :EducationProgram .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#GovernmentUnit
-:GovernmentUnit rdf:type owl:Class ;
-                rdfs:subClassOf <http://www.w3.org/ns/org#OrganizationalUnit> ;
-                rdfs:comment "a government division or unit" .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#HealthProgram
-:HealthProgram rdf:type owl:Class ;
-               rdfs:subClassOf :JailProgram ;
-               rdfs:comment "a health program for present or former jail inmates" .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#HousingProgram
-:HousingProgram rdf:type owl:Class ;
-                rdfs:subClassOf :JailProgram ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :location ;
-                                  owl:allValuesFrom <http://www.w3.org/2006/vcard/ns#Address>
-                                ] ;
-                rdfs:comment "a housing program for former jail inmates" .
+                   rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#JailInmate
 :JailInmate rdf:type owl:Class ;
             rdfs:subClassOf <http://xmlns.com/foaf/0.1/Person> ,
                             [ rdf:type owl:Restriction ;
-                              owl:onProperty :attends ;
-                              owl:someValuesFrom :JailProgram
+                              owl:onProperty <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#attends> ;
+                              owl:someValuesFrom <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram>
                             ] ;
             rdfs:comment "a person who is currently or formerly in jail" .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#JailProgram
-:JailProgram rdf:type owl:Class ;
-             rdfs:subClassOf [ rdf:type owl:Restriction ;
-                               owl:onProperty :contact ;
-                               owl:allValuesFrom <http://xmlns.com/foaf/0.1/Person>
-                             ] ;
-             rdfs:comment "a program for present or former jail inmates" .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#MaleInmates
@@ -400,7 +342,7 @@
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#MaleOnlyProgram
 :MaleOnlyProgram rdf:type owl:Class ;
-                 owl:equivalentClass [ owl:intersectionOf ( :JailProgram
+                 owl:equivalentClass [ owl:intersectionOf ( <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram>
                                                             [ rdf:type owl:Restriction ;
                                                               owl:onProperty :allowedGender ;
                                                               owl:hasValue :Male
@@ -408,48 +350,86 @@
                                                           ) ;
                                        rdf:type owl:Class
                                      ] ;
-                 rdfs:subClassOf :JailProgram .
+                 rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#MentalHealthProgram
 :MentalHealthProgram rdf:type owl:Class ;
-                     rdfs:subClassOf :HealthProgram ;
+                     rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HealthProgram> ;
                      rdfs:comment "a mental health program for present or former jail inmates (e.g. substance abuse, counseling)" .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#NonGovermentOrganization
-:NonGovermentOrganization rdf:type owl:Class ;
-                          rdfs:subClassOf <http://www.w3.org/ns/org#FormalOrganization> ;
-                          rdfs:comment "a nongovernment organization" .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#PermanentHousingProgram
 :PermanentHousingProgram rdf:type owl:Class ;
-                         rdfs:subClassOf :HousingProgram ;
+                         rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HousingProgram> ;
                          rdfs:comment "permanent housing for former jail inmates" .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#PhysicalHealthProgram
 :PhysicalHealthProgram rdf:type owl:Class ;
-                       rdfs:subClassOf :HealthProgram ;
+                       rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HealthProgram> ;
                        rdfs:comment "a program for the physical health of present or former jail inmates (e.g. clinic, dental)" .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#TransitionalHousingProgram
 :TransitionalHousingProgram rdf:type owl:Class ;
-                            rdfs:subClassOf :HousingProgram ;
+                            rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HousingProgram> ;
                             rdfs:comment "transitional (temporary) housing for former jail inmates" .
 
 
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#VocationalTrainingProgram
-:VocationalTrainingProgram rdf:type owl:Class ;
-                           rdfs:subClassOf :EducationProgram .
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#EducationProgram
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#EducationProgram> rdf:type owl:Class ;
+                                                                                                      rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ;
+                                                                                                      rdfs:comment "a  educational program for present or former jail inmates" .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#EmploymentProgram
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#EmploymentProgram> rdf:type owl:Class ;
+                                                                                                       rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ;
+                                                                                                       rdfs:comment "an employment program for present or former jail inmates" .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#GovernmentUnit
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#GovernmentUnit> rdf:type owl:Class ;
+                                                                                                    rdfs:subClassOf <http://www.w3.org/ns/org#OrganizationalUnit> ;
+                                                                                                    rdfs:comment "a government division or unit" .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HealthProgram
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HealthProgram> rdf:type owl:Class ;
+                                                                                                   rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ;
+                                                                                                   rdfs:comment "a health program for present or former jail inmates" .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HousingProgram
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#HousingProgram> rdf:type owl:Class ;
+                                                                                                    rdfs:subClassOf <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> ,
+                                                                                                                    [ rdf:type owl:Restriction ;
+                                                                                                                      owl:onProperty :location ;
+                                                                                                                      owl:allValuesFrom <http://www.w3.org/2006/vcard/ns#Address>
+                                                                                                                    ] ;
+                                                                                                    rdfs:comment "a housing program for former jail inmates" .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram> rdf:type owl:Class ;
+                                                                                                 rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                                                                                                   owl:onProperty :contact ;
+                                                                                                                   owl:allValuesFrom <http://xmlns.com/foaf/0.1/Person>
+                                                                                                                 ] ;
+                                                                                                 rdfs:comment "a program for present or former jail inmates" .
+
+
+###  http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#NonGovermentOrganization
+<http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#NonGovermentOrganization> rdf:type owl:Class ;
+                                                                                                              rdfs:subClassOf <http://www.w3.org/ns/org#FormalOrganization> ;
+                                                                                                              rdfs:comment "a nongovernment organization" .
 
 
 ###  http://xmlns.com/foaf/0.1/Organization
 <http://xmlns.com/foaf/0.1/Organization> rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                                           owl:onProperty :oversees ;
-                                                           owl:someValuesFrom :JailProgram
+                                                           owl:onProperty <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#oversees> ;
+                                                           owl:someValuesFrom <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#JailProgram>
                                                          ] .
 
 
@@ -466,6 +446,10 @@
 <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Sherry_Wong> <http://www.estrellaproject.org/lkif-core/action.owl#actor> :Formal_Charge_of_Jane_Deere ,
                                                                                                                          :Formal_Charge_of_Jane_Doe ,
                                                                                                                          :Formal_Charge_of_John_Deere .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Black_and_Pink
+:Black_and_Pink rdf:type owl:NamedIndividual .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Complaint_of_Jane_Deere
@@ -533,8 +517,8 @@
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Jane_Doe
 :Jane_Doe rdf:type owl:NamedIndividual ,
                    :JailInmate ;
-          :attends :UC_Books_To_Prisoners ;
-          :hasGender :Female .
+          :hasGender :Female ;
+          <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#attends> :UC_Books_To_Prisoners .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#John_Deere
@@ -574,7 +558,7 @@
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#UC_Books_To_Prisoners
 :UC_Books_To_Prisoners rdf:type owl:NamedIndividual ,
-                                :EducationProgram ;
+                                <http://www.semanticweb.org/mariajaninasarol/ontologies/2017/10/untitled-ontology-4#EducationProgram> ;
                        :hasRestriction "false"^^xsd:boolean .
 
 

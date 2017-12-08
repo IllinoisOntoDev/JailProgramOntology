@@ -461,8 +461,7 @@ foaf:Person rdf:type owl:Class ;
 
 
 ###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#John_Doe
-:John_Doe rdf:type owl:NamedIndividual ,
-                   foaf:Person .
+:John_Doe rdf:type owl:NamedIndividual .
 
 
 ###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Misdemeanor
