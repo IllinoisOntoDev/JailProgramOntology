@@ -2,7 +2,7 @@
 
 1. Vocabulary without imports - http://purl.org/lis590OD/Fall17/JailProgramOnt#
 
-2/3. Integration with other vocabularies
+2. (2-4) Integration with other vocabularies
 
 My ontology integrates with Erica's and Linh's ontologies, which are the crime charge and ex-offender program ontologies, respectively.
 
