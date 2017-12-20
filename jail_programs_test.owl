@@ -1,33 +1,56 @@
 @prefix : <http://purl.org/lis590OD/Fall17/JailProgramOnt#> .
+@prefix ns: <http://www.w3.org/2006/vcard/ns#> .
+@prefix org: <http://www.w3.org/ns/org#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix crime: <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#> .
+@prefix orgrel: <http://purl.org/lis590od/Fall17/OrgRel#> .
 @base <http://purl.org/lis590OD/Fall17/JailProgramOnt> .
 
 <http://purl.org/lis590OD/Fall17/JailProgramOnt> rdf:type owl:Ontology ;
-                                                  owl:imports <http://www.w3.org/2006/vcard/ns> ,
-                                                              <http://purl.org/lis590OD/Fall17/CrimeChargeOnt> ,
-                                                              <http://www.w3.org/ns/org#> .
-
-#################################################################
-#    Annotation properties
-#################################################################
-
-###  http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled
-<http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> rdf:type owl:AnnotationProperty .
-
+                                                  owl:imports <http://purl.org/lis590OD/Fall17/CrimeChargeOnt> .
 
 #################################################################
 #    Object Properties
 #################################################################
 
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#allowedInmateCrime
-:allowedInmateCrime rdf:type owl:ObjectProperty ;
-                    rdfs:subPropertyOf owl:topObjectProperty ;
-                    rdfs:domain :JailProgram ;
-                    rdfs:comment "types of inmates exluded from a housing program because of the nature of their committed crimes" .
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasArtifact
+crime:hasArtifact rdf:type owl:ObjectProperty .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasClassification
+crime:hasClassification rdf:type owl:ObjectProperty .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasLawViolation
+crime:hasLawViolation rdf:type owl:ObjectProperty .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasRecipient
+crime:hasRecipient rdf:type owl:ObjectProperty .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#isChargedWith
+crime:isChargedWith rdf:type owl:ObjectProperty .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#allowedGender
+:allowedGender rdf:type owl:ObjectProperty ;
+               owl:inverseOf :isAllowedGenderIn ;
+               rdfs:domain :JailProgram ;
+               rdfs:range ns:Gender .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#allowedInmateOffense
+:allowedInmateOffense rdf:type owl:ObjectProperty ;
+                      rdfs:subPropertyOf owl:topObjectProperty ;
+                      owl:inverseOf :isAllowedOffenseIn ;
+                      rdfs:domain :JailProgram ;
+                      rdfs:range crime:CrimeClassification ;
+                      rdfs:comment "types of inmates exluded from a housing program because of the nature of their committed crimes" .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#attends
@@ -44,12 +67,20 @@
          rdfs:comment "the contact person of the nongovernment organization" .
 
 
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#hasOffenseType
-:hasOffenseType rdf:type owl:ObjectProperty ;
-                rdfs:subPropertyOf owl:topObjectProperty ;
-                owl:propertyChainAxiom ( <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#isChargedWith>
-                                         <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasClassification>
-                                       ) .
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#hasGender
+:hasGender rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf owl:topObjectProperty ;
+           rdfs:domain <http://xmlns.com/foaf/0.1/Person> ;
+           rdfs:range ns:Gender .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#isAllowedGenderIn
+:isAllowedGenderIn rdf:type owl:ObjectProperty .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#isAllowedOffenseIn
+:isAllowedOffenseIn rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf owl:topObjectProperty .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#isAttendedBy
@@ -59,7 +90,14 @@
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#isEligibleFor
-:isEligibleFor rdf:type owl:ObjectProperty .
+:isEligibleFor rdf:type owl:ObjectProperty ;
+               rdfs:domain :JailInmate ;
+               owl:propertyChainAxiom ( crime:isChargedWith
+                                        :isAllowedOffenseIn
+                                      ) ,
+                                      ( :hasGender
+                                        :isAllowedGenderIn
+                                      ) .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#isOverseenBy
@@ -72,20 +110,35 @@
 :location rdf:type owl:ObjectProperty ;
           rdfs:subPropertyOf owl:topObjectProperty ;
           rdfs:domain :HousingProgram ;
-          rdfs:range <http://www.w3.org/2006/vcard/ns#Address> ;
           rdfs:comment "the location of the housing program" .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#oversees
 :oversees rdf:type owl:ObjectProperty ;
           rdfs:domain <http://xmlns.com/foaf/0.1/Organization> ;
-          rdfs:range :JailProgram ;
           rdfs:comment "program overseen by the organization" .
 
 
+###  http://purl.org/lis590od/Fall17/OrgRel#agencyRole
+orgrel:agencyRole rdf:type owl:ObjectProperty .
+
+
+###  http://purl.org/lis590od/Fall17/OrgRel#clientRole
+orgrel:clientRole rdf:type owl:ObjectProperty .
+
+
+###  http://www.essepuntato.it/2008/12/pattern#contains
+<http://www.essepuntato.it/2008/12/pattern#contains> rdf:type owl:ObjectProperty .
+
+
+###  http://www.estrellaproject.org/lkif-core/action.owl#actor
+<http://www.estrellaproject.org/lkif-core/action.owl#actor> rdf:type owl:ObjectProperty .
+
+
 ###  http://www.w3.org/2006/vcard/ns#hasAddress
-<http://www.w3.org/2006/vcard/ns#hasAddress> rdfs:domain <http://xmlns.com/foaf/0.1/Organization> ;
-                                             rdfs:comment "the address of the organization" .
+ns:hasAddress rdf:type owl:ObjectProperty ;
+              rdfs:domain <http://xmlns.com/foaf/0.1/Organization> ;
+              rdfs:comment "the address of the organization" .
 
 
 #################################################################
@@ -113,28 +166,11 @@
      rdfs:range xsd:int .
 
 
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#allowedGender
-:allowedGender rdf:type owl:DatatypeProperty ;
-               rdfs:domain :TransitionalHousingProgram ;
-               rdfs:range [ rdf:type rdfs:Datatype ;
-                            owl:oneOf [ rdf:type rdf:List ;
-                                        rdf:first "all" ;
-                                        rdf:rest [ rdf:type rdf:List ;
-                                                   rdf:first "female" ;
-                                                   rdf:rest [ rdf:type rdf:List ;
-                                                              rdf:first "male" ;
-                                                              rdf:rest rdf:nil
-                                                            ]
-                                                 ]
-                                      ]
-                          ] .
-
-
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#description
 :description rdf:type owl:DatatypeProperty ;
              rdfs:subPropertyOf owl:topDataProperty ;
              rdfs:domain :JailProgram ,
-                         <http://www.w3.org/ns/org#Organization> ;
+                         org:Organization ;
              rdfs:range xsd:string .
 
 
@@ -156,20 +192,6 @@
        rdfs:subPropertyOf owl:topDataProperty ;
        rdfs:domain :NonGovermentOrganization ;
        rdfs:range xsd:string .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#gender
-:gender rdf:type owl:DatatypeProperty ;
-        rdfs:domain <http://xmlns.com/foaf/0.1/Person> ;
-        rdfs:range [ rdf:type rdfs:Datatype ;
-                     owl:oneOf [ rdf:type rdf:List ;
-                                 rdf:first "female" ;
-                                 rdf:rest [ rdf:type rdf:List ;
-                                            rdf:first "male" ;
-                                            rdf:rest rdf:nil
-                                          ]
-                               ]
-                   ] .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#governmentLevel
@@ -308,6 +330,33 @@
 #    Classes
 #################################################################
 
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Charge
+crime:Charge rdf:type owl:Class .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#ChargedPerson
+crime:ChargedPerson rdf:type owl:Class ;
+                    rdfs:subClassOf <http://xmlns.com/foaf/0.1/Person> .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#CrimeClassification
+crime:CrimeClassification rdf:type owl:Class .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#CrimeCode
+crime:CrimeCode rdf:type owl:Class .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#CollegeEducationProgram
+:CollegeEducationProgram rdf:type owl:Class ;
+                         rdfs:subClassOf :EducationProgram .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#ComputerSkillsProgram
+:ComputerSkillsProgram rdf:type owl:Class ;
+                       rdfs:subClassOf :VocationalTrainingProgram .
+
+
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#EducationProgram
 :EducationProgram rdf:type owl:Class ;
                   rdfs:subClassOf :JailProgram ;
@@ -320,9 +369,40 @@
                    rdfs:comment "an employment program for present or former jail inmates" .
 
 
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#FemaleInmates
+:FemaleInmates rdf:type owl:Class ;
+               owl:equivalentClass [ owl:intersectionOf ( :JailInmate
+                                                          [ rdf:type owl:Restriction ;
+                                                            owl:onProperty :hasGender ;
+                                                            owl:hasValue :Female
+                                                          ]
+                                                        ) ;
+                                     rdf:type owl:Class
+                                   ] ;
+               rdfs:subClassOf :JailInmate .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#FemaleOnlyProgram
+:FemaleOnlyProgram rdf:type owl:Class ;
+                   owl:equivalentClass [ owl:intersectionOf ( :JailProgram
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty :allowedGender ;
+                                                                owl:hasValue :Female
+                                                              ]
+                                                            ) ;
+                                         rdf:type owl:Class
+                                       ] ;
+                   rdfs:subClassOf :JailProgram .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#GEDProgram
+:GEDProgram rdf:type owl:Class ;
+            rdfs:subClassOf :EducationProgram .
+
+
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#GovernmentUnit
 :GovernmentUnit rdf:type owl:Class ;
-                rdfs:subClassOf <http://www.w3.org/ns/org#OrganizationalUnit> ;
+                rdfs:subClassOf org:OrganizationalUnit ;
                 rdfs:comment "a government division or unit" .
 
 
@@ -334,19 +414,19 @@
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#HousingProgram
 :HousingProgram rdf:type owl:Class ;
-                rdfs:subClassOf :JailProgram ;
+                rdfs:subClassOf :JailProgram ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :location ;
+                                  owl:allValuesFrom ns:Address
+                                ] ;
                 rdfs:comment "a housing program for former jail inmates" .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#JailInmate
 :JailInmate rdf:type owl:Class ;
-            rdfs:subClassOf <http://xmlns.com/foaf/0.1/Person> ,
+            rdfs:subClassOf crime:ChargedPerson ,
                             [ rdf:type owl:Restriction ;
                               owl:onProperty :attends ;
-                              owl:someValuesFrom :JailProgram
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :isEligibleFor ;
                               owl:someValuesFrom :JailProgram
                             ] ;
             rdfs:comment "a person who is currently or formerly in jail" .
@@ -361,6 +441,45 @@
              rdfs:comment "a program for present or former jail inmates" .
 
 
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#JailProgramCompletion
+:JailProgramCompletion rdf:type owl:Class ;
+                       rdfs:subClassOf orgrel:OrganizationRelationship ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orgrel:agencyRole ;
+                                         owl:hasValue orgrel:service_provider
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty orgrel:clientRole ;
+                                         owl:hasValue orgrel:detainee
+                                       ] .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#MaleInmates
+:MaleInmates rdf:type owl:Class ;
+             owl:equivalentClass [ owl:intersectionOf ( :JailInmate
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty :hasGender ;
+                                                          owl:hasValue :Male
+                                                        ]
+                                                      ) ;
+                                   rdf:type owl:Class
+                                 ] ;
+             rdfs:subClassOf :JailInmate .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#MaleOnlyProgram
+:MaleOnlyProgram rdf:type owl:Class ;
+                 owl:equivalentClass [ owl:intersectionOf ( :JailProgram
+                                                            [ rdf:type owl:Restriction ;
+                                                              owl:onProperty :allowedGender ;
+                                                              owl:hasValue :Male
+                                                            ]
+                                                          ) ;
+                                       rdf:type owl:Class
+                                     ] ;
+                 rdfs:subClassOf :JailProgram .
+
+
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#MentalHealthProgram
 :MentalHealthProgram rdf:type owl:Class ;
                      rdfs:subClassOf :HealthProgram ;
@@ -369,7 +488,7 @@
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#NonGovermentOrganization
 :NonGovermentOrganization rdf:type owl:Class ;
-                          rdfs:subClassOf <http://www.w3.org/ns/org#FormalOrganization> ;
+                          rdfs:subClassOf org:FormalOrganization ;
                           rdfs:comment "a nongovernment organization" .
 
 
@@ -391,87 +510,194 @@
                             rdfs:comment "transitional (temporary) housing for former jail inmates" .
 
 
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#VocationalTrainingProgram
+:VocationalTrainingProgram rdf:type owl:Class ;
+                           rdfs:subClassOf :EducationProgram .
+
+
+###  http://purl.org/lis590od/Fall17/OrgRel#OrganizationRelationship
+orgrel:OrganizationRelationship rdf:type owl:Class .
+
+
+###  http://www.estrellaproject.org/lkif-core/action.owl#Artifact
+<http://www.estrellaproject.org/lkif-core/action.owl#Artifact> rdf:type owl:Class .
+
+
+###  http://www.estrellaproject.org/lkif-core/norm.owl#Statute
+<http://www.estrellaproject.org/lkif-core/norm.owl#Statute> rdf:type owl:Class .
+
+
+###  http://www.w3.org/2006/vcard/ns#Address
+ns:Address rdf:type owl:Class .
+
+
+###  http://www.w3.org/2006/vcard/ns#Female
+ns:Female rdf:type owl:Class .
+
+
+###  http://www.w3.org/2006/vcard/ns#Gender
+ns:Gender rdf:type owl:Class .
+
+
+###  http://www.w3.org/2006/vcard/ns#Male
+ns:Male rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/org#FormalOrganization
+org:FormalOrganization rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/org#Organization
+org:Organization rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/org#OrganizationalUnit
+org:OrganizationalUnit rdf:type owl:Class .
+
+
+###  http://xmlns.com/foaf/0.1/Organization
+<http://xmlns.com/foaf/0.1/Organization> rdf:type owl:Class ;
+                                         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                                           owl:onProperty :oversees ;
+                                                           owl:someValuesFrom :JailProgram
+                                                         ] .
+
+
+###  http://xmlns.com/foaf/0.1/Person
+<http://xmlns.com/foaf/0.1/Person> rdf:type owl:Class .
+
+
 #################################################################
 #    Individuals
 #################################################################
 
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Felony
+crime:Felony rdf:type owl:NamedIndividual .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Infraction
+crime:Infraction rdf:type owl:NamedIndividual .
+
+
 ###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#John_Doe
-<http://purl.org/lis590OD/Fall17/CrimeChargeOnt#John_Doe> rdf:type :JailInmate ;
-                                                          :age 20 ;
-                                                          :gender "male"^^xsd:string .
+crime:John_Doe rdf:type owl:NamedIndividual ,
+                        :JailInmate ;
+               :hasGender :Male .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Misdemeanor
+crime:Misdemeanor rdf:type owl:NamedIndividual .
+
+
+###  http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Sherry_Wong
+crime:Sherry_Wong rdf:type owl:NamedIndividual ;
+                  <http://www.estrellaproject.org/lkif-core/action.owl#actor> :Formal_Charge_of_Jane_Deere ,
+                                                                              :Formal_Charge_of_Jane_Doe ,
+                                                                              :Formal_Charge_of_John_Deere .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Complaint_of_Jane_Deere
+:Complaint_of_Jane_Deere rdf:type owl:NamedIndividual ,
+                                  <http://www.estrellaproject.org/lkif-core/action.owl#Artifact> .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Complaint_of_Jane_Doe
+:Complaint_of_Jane_Doe rdf:type owl:NamedIndividual ,
+                                <http://www.estrellaproject.org/lkif-core/action.owl#Artifact> .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Complaint_of_John_Deere
+:Complaint_of_John_Deere rdf:type owl:NamedIndividual ,
+                                  <http://www.estrellaproject.org/lkif-core/action.owl#Artifact> .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Elm_Street_Apartments
 :Elm_Street_Apartments rdf:type owl:NamedIndividual ,
                                 :TransitionalHousingProgram ;
-                       :allowedInmateCrime <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Infraction> ,
-                                           <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Misdemeanor> ;
+                       :allowedInmateOffense crime:Infraction ,
+                                             crime:Misdemeanor ;
                        :hasRestriction "true"^^xsd:boolean .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Female
+:Female rdf:type owl:NamedIndividual ,
+                 ns:Female .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#First_Degree_Murder
 :First_Degree_Murder rdf:type owl:NamedIndividual ,
-                              <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#CrimeCode> .
+                              crime:CrimeCode .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Formal_Charge_of_Jane_Deere
 :Formal_Charge_of_Jane_Deere rdf:type owl:NamedIndividual ,
-                                      <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Charge> ;
-                             <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasLawViolation> <http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/1-1> ;
-                             <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasRecipient> :Jane_Deere .
+                                      crime:Charge ;
+                             crime:hasArtifact :Complaint_of_Jane_Deere ;
+                             crime:hasLawViolation <http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/1-1> ;
+                             crime:hasRecipient :Jane_Deere .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Formal_Charge_of_Jane_Doe
 :Formal_Charge_of_Jane_Doe rdf:type owl:NamedIndividual ,
-                                    <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Charge> ;
-                           <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasLawViolation> <http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/2-1> ;
-                           <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasRecipient> :Jane_Doe .
+                                    crime:Charge ;
+                           crime:hasArtifact :Complaint_of_Jane_Doe ;
+                           crime:hasLawViolation <http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/9-1> ;
+                           crime:hasRecipient :Jane_Doe .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Formal_Charge_of_John_Deere
 :Formal_Charge_of_John_Deere rdf:type owl:NamedIndividual ,
-                                      <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Charge> ;
-                             <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasLawViolation> <http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/9-1> ;
-                             <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasRecipient> :John_Deere .
+                                      crime:Charge ;
+                             crime:hasLawViolation <http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/2-1> ;
+                             crime:hasRecipient :John_Deere .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Jane_Deere
 :Jane_Deere rdf:type owl:NamedIndividual ,
                      :JailInmate ;
-            :gender "female"^^xsd:string .
+            :hasGender :Female .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Jane_Doe
 :Jane_Doe rdf:type owl:NamedIndividual ,
                    :JailInmate ;
           :attends :UC_Books_To_Prisoners ;
-          :gender "female"^^xsd:string .
+          :hasGender :Female .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#John_Deere
 :John_Deere rdf:type owl:NamedIndividual ,
-                     :JailInmate ,
-                     <http://xmlns.com/foaf/0.1/Person> ;
-            :age 17 ;
-            :gender "male"^^xsd:string .
+                     :JailInmate ;
+            :hasGender :Male ;
+            :age 17 .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Male
+:Male rdf:type owl:NamedIndividual ,
+               ns:Male .
+
+
+###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Maternal_Health_Program
+:Maternal_Health_Program rdf:type owl:NamedIndividual ,
+                                  :PhysicalHealthProgram ;
+                         :allowedGender :Female .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Stepping_Stone_Shelter
 :Stepping_Stone_Shelter rdf:type owl:NamedIndividual ,
                                  :TransitionalHousingProgram ;
-                        :allowedGender "male"^^xsd:string ;
-                        :hasRestriction "true"^^xsd:boolean ;
+                        :allowedGender :Male ;
                         :minimumAge 18 .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Theft
 :Theft rdf:type owl:NamedIndividual ,
-                <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#CrimeCode> .
+                crime:CrimeCode .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#Traffic_Violation
 :Traffic_Violation rdf:type owl:NamedIndividual ,
-                            <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#CrimeCode> .
+                            crime:CrimeCode .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#UC_Books_To_Prisoners
@@ -480,142 +706,33 @@
                        :hasRestriction "false"^^xsd:boolean .
 
 
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#female
-:female rdf:type owl:NamedIndividual .
-
-
-###  http://purl.org/lis590OD/Fall17/JailProgramOnt#male
-:male rdf:type owl:NamedIndividual .
-
-
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/1-1
 <http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/1-1> rdf:type owl:NamedIndividual ,
                                                                     <http://www.estrellaproject.org/lkif-core/norm.owl#Statute> ;
-                                                           <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasClassification> <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Misdemeanor> ;
+                                                           crime:hasClassification crime:Misdemeanor ;
                                                            <http://www.essepuntato.it/2008/12/pattern#contains> :Theft .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/2-1
 <http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/2-1> rdf:type owl:NamedIndividual ,
                                                                     <http://www.estrellaproject.org/lkif-core/norm.owl#Statute> ;
-                                                           <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasClassification> <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Infraction> ;
+                                                           crime:hasClassification crime:Infraction ;
                                                            <http://www.essepuntato.it/2008/12/pattern#contains> :Traffic_Violation .
 
 
 ###  http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/9-1
 <http://purl.org/lis590OD/Fall17/JailProgramOnt#720-5/9-1> rdf:type owl:NamedIndividual ,
                                                                     <http://www.estrellaproject.org/lkif-core/norm.owl#Statute> ;
-                                                           <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#hasClassification> <http://purl.org/lis590OD/Fall17/CrimeChargeOnt#Felony> ;
+                                                           crime:hasClassification crime:Felony ;
                                                            <http://www.essepuntato.it/2008/12/pattern#contains> :First_Degree_Murder .
 
 
-#################################################################
-#    Rules
-#################################################################
+###  http://purl.org/lis590od/Fall17/OrgRel#detainee
+orgrel:detainee rdf:type owl:NamedIndividual .
 
-:i rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
 
-:c rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
+###  http://purl.org/lis590od/Fall17/OrgRel#service_provider
+orgrel:service_provider rdf:type owl:NamedIndividual .
 
-:p rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
-
-:g rdf:type <http://www.w3.org/2003/11/swrl#Variable> .
-
-[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
-   rdfs:comment ""^^xsd:string ;
-   rdfs:label "Crime"^^xsd:string ;
-   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
-   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
-                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :JailInmate ;
-                                                       <http://www.w3.org/2003/11/swrl#argument1> :i
-                                                     ] ;
-                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
-                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasOffenseType ;
-                                                                  <http://www.w3.org/2003/11/swrl#argument1> :i ;
-                                                                  <http://www.w3.org/2003/11/swrl#argument2> :c
-                                                                ] ;
-                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
-                                                                             <http://www.w3.org/2003/11/swrl#classPredicate> :JailProgram ;
-                                                                             <http://www.w3.org/2003/11/swrl#argument1> :p
-                                                                           ] ;
-                                                                 rdf:rest rdf:nil
-                                                               ]
-                                                    ]
-                                         ] ;
-   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
-                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :isEligibleFor ;
-                                                       <http://www.w3.org/2003/11/swrl#argument1> :i ;
-                                                       <http://www.w3.org/2003/11/swrl#argument2> :p
-                                                     ] ;
-                                           rdf:rest rdf:nil
-                                         ]
- ] .
-
-[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
-   rdfs:comment ""^^xsd:string ;
-   rdfs:label "DefaultProgramEligibility"^^xsd:string ;
-   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
-   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
-                                                       <http://www.w3.org/2003/11/swrl#classPredicate> :JailInmate ;
-                                                       <http://www.w3.org/2003/11/swrl#argument1> :i
-                                                     ] ;
-                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#ClassAtom> ;
-                                                                  <http://www.w3.org/2003/11/swrl#classPredicate> :JailProgram ;
-                                                                  <http://www.w3.org/2003/11/swrl#argument1> :p
-                                                                ] ;
-                                                      rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                                                 rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
-                                                                             <http://www.w3.org/2003/11/swrl#propertyPredicate> :hasRestriction ;
-                                                                             <http://www.w3.org/2003/11/swrl#argument1> :p ;
-                                                                             <http://www.w3.org/2003/11/swrl#argument2> "false"^^xsd:boolean
-                                                                           ] ;
-                                                                 rdf:rest rdf:nil
-                                                               ]
-                                                    ]
-                                         ] ;
-   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
-                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :isEligibleFor ;
-                                                       <http://www.w3.org/2003/11/swrl#argument1> :i ;
-                                                       <http://www.w3.org/2003/11/swrl#argument2> :p
-                                                     ] ;
-                                           rdf:rest rdf:nil
-                                         ]
- ] .
-
-[ <http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled> "true"^^xsd:boolean ;
-   rdfs:comment ""^^xsd:string ;
-   rdfs:label "Gender"^^xsd:string ;
-   rdf:type <http://www.w3.org/2003/11/swrl#Imp> ;
-   <http://www.w3.org/2003/11/swrl#body> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
-                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :allowedGender ;
-                                                       <http://www.w3.org/2003/11/swrl#argument1> :p ;
-                                                       <http://www.w3.org/2003/11/swrl#argument2> :g
-                                                     ] ;
-                                           rdf:rest [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                                      rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom> ;
-                                                                  <http://www.w3.org/2003/11/swrl#propertyPredicate> :gender ;
-                                                                  <http://www.w3.org/2003/11/swrl#argument1> :i ;
-                                                                  <http://www.w3.org/2003/11/swrl#argument2> :g
-                                                                ] ;
-                                                      rdf:rest rdf:nil
-                                                    ]
-                                         ] ;
-   <http://www.w3.org/2003/11/swrl#head> [ rdf:type <http://www.w3.org/2003/11/swrl#AtomList> ;
-                                           rdf:first [ rdf:type <http://www.w3.org/2003/11/swrl#IndividualPropertyAtom> ;
-                                                       <http://www.w3.org/2003/11/swrl#propertyPredicate> :isEligibleFor ;
-                                                       <http://www.w3.org/2003/11/swrl#argument1> :i ;
-                                                       <http://www.w3.org/2003/11/swrl#argument2> :p
-                                                     ] ;
-                                           rdf:rest rdf:nil
-                                         ]
- ] .
 
 ###  Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi
